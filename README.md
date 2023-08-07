@@ -1,47 +1,50 @@
-# Astro Starter Kit: Minimal
+# Astro Auth0 Middleware
 
-```
-npm create astro@latest -- --template minimal
-```
+A middleware implementation for Auth0 using the Authorization Code Flow and `openid-client`.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/minimal)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/minimal)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/minimal/devcontainer.json)
+## Getting Started
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+### Installation
 
-## 🚀 Project Structure
+Using [npm](https://npmjs.org):
 
-Inside of your Astro project, you'll see the following folders and files:
-
-```
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+```sh
+npm install astro-auth0 # not yet implemented
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+This library requires Node.js 16 LTS and newer LTS versions.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+### Auth0 Configuration
 
-Any static assets, like images, can be placed in the `public/` directory.
+Create a **Regular Web Application** in the [Auth0 Dashboard](https://manage.auth0.com/#/applications).
 
-## 🧞 Commands
+> **If you're using an existing application**, verify that you have configured the following settings in your Regular Web Application:
+>
+> - Click on the "Settings" tab of your application's page.
+> - Scroll down and click on the "Show Advanced Settings" link.
+> - Under "Advanced Settings", click on the "OAuth" tab.
+> - Ensure that "JsonWebToken Signature Algorithm" is set to `RS256` and that "OIDC Conformant" is enabled.
 
-All commands are run from the root of the project, from a terminal:
+Next, configure the following URLs for your application under the "Application URIs" section of the "Settings" page:
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:3000`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+- **Allowed Callback URLs**: `http://localhost:3000/api/auth/callback`
+- **Allowed Logout URLs**: `http://localhost:3000/`
 
-## 👀 Want to learn more?
+Take note of the **Client ID**, **Client Secret**, and **Domain** values under the "Basic Information" section. You'll need these values in the next step.
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+### Basic Setup
+
+#### Configure the Application
+
+You need to allow your Next.js application to communicate properly with Auth0. You can do so by creating a `.env.local` file under your root project directory that defines the necessary Auth0 configuration values as follows:
+
+```bash
+# The base url of your application
+AUTH0_BASE_URL='http://localhost:3000'
+# The url of your Auth0 tenant domain
+AUTH0_ISSUER_BASE_URL='https://YOUR_AUTH0_DOMAIN.auth0.com'
+# Your Auth0 application's Client ID
+AUTH0_CLIENT_ID='YOUR_AUTH0_CLIENT_ID'
+# Your Auth0 application's Client Secret
+AUTH0_CLIENT_SECRET='YOUR_AUTH0_CLIENT_SECRET'
+```
